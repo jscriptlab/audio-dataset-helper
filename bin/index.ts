@@ -148,11 +148,6 @@ import sha1sum from './sha1sum';
 
   const inputFileHash = await sha1sum(inputFile);
 
-  const serializer = new Serializer({
-    textEncoder: new TextEncoder(),
-    tailByteLength: 128
-  });
-
   const inputFileDigest = FileDigestSHA1({
     value: inputFileHash
   });
@@ -174,10 +169,13 @@ import sha1sum from './sha1sum';
     inputFileMetadata = FFmpegOriginalFileResultUnknown({
       originalFile: inputFile
     });
+    console.log('Setting default metadata for file "%s": %o', inputFile, inputFileMetadata);
+  } else {
+    console.log('Metadata for file "%s": %o', inputFile, inputFileMetadata);
   }
 
   if (isFFmpegOriginalFileResultCorrupted(inputFileMetadata)) {
-    console.log(
+    console.error(
       'Metadata for file "%s" is corrupted. You might need to delete it.',
       inputFile
     );
@@ -186,12 +184,17 @@ import sha1sum from './sha1sum';
   }
 
   if (isFFmpegOriginalFileResultFailure(inputFileMetadata)) {
-    console.log(
+    console.error(
       `Metadata for file "${inputFile}" contains a failure result. Skipping...`
     );
     // Do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
     return;
   }
+
+  const serializer = new Serializer({
+    textEncoder: new TextEncoder(),
+    tailByteLength: 128
+  });
 
   // Test the input file using `ffprobe`, encode it if it is a real file
   try {
@@ -209,7 +212,7 @@ import sha1sum from './sha1sum';
       '-of',
       'csv=p=0',
       inputFile
-    ]);
+    ], { stdio: ['ignore', 'ignore', 'ignore'], log: true });
 
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,

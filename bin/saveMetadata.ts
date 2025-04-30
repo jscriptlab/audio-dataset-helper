@@ -8,6 +8,9 @@ export default async function saveMetadata<T>(
 ): Promise<void> {
   const fs = await import('node:fs');
 
+  // Rewind the serializer every time before writting something to it.
+  serializer.rewind();
+
   try {
     encodeFn(serializer, metadata);
 
