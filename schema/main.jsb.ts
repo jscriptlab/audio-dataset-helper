@@ -1,5 +1,5 @@
-import { ISerializer } from './__types__';
-import { IDeserializer } from './__types__';
+import {ISerializer} from './__types__';
+import {IDeserializer} from './__types__';
 import JSBI from 'jsbi';
 export type FFmpegOriginalFileResult =
   | Readonly<FFmpegOriginalFileResultSuccess>

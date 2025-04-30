@@ -1,4 +1,4 @@
-import { getString } from 'cli-argument-helper/string';
+import {getString} from 'cli-argument-helper/string';
 import getArgumentAssignmentList from './getArgumentAssignmentList';
 
 enum FFmpegAudioFormat {

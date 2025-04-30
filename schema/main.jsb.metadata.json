@@ -40,7 +40,7 @@
       },
       {
         "name": "originalFile",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       }
     ]
   },
@@ -59,11 +59,11 @@
       },
       {
         "name": "originalFile",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       },
       {
         "name": "details",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       }
     ]
   },
@@ -75,7 +75,7 @@
     "params": [
       {
         "name": "originalFile",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       }
     ]
   },
@@ -140,19 +140,19 @@
       },
       {
         "name": "outputFile",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       },
       {
         "name": "bitrate",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       },
       {
         "name": "sampleRate",
-        "type": { "type": "generic", "value": "int" }
+        "type": {"type": "generic", "value": "int"}
       },
       {
         "name": "channelCount",
-        "type": { "type": "generic", "value": "int" }
+        "type": {"type": "generic", "value": "int"}
       },
       {
         "name": "audioCodec",
@@ -178,7 +178,7 @@
       },
       {
         "name": "details",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       }
     ]
   },
@@ -208,7 +208,7 @@
     "params": [
       {
         "name": "value",
-        "type": { "type": "generic", "value": "string" }
+        "type": {"type": "generic", "value": "string"}
       }
     ]
   },
@@ -254,7 +254,7 @@
         },
         {
           "name": "originalFile",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         }
       ]
     },
@@ -273,11 +273,11 @@
         },
         {
           "name": "originalFile",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         },
         {
           "name": "details",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         }
       ]
     },
@@ -289,7 +289,7 @@
       "params": [
         {
           "name": "originalFile",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         }
       ]
     },
@@ -354,19 +354,19 @@
         },
         {
           "name": "outputFile",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         },
         {
           "name": "bitrate",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         },
         {
           "name": "sampleRate",
-          "type": { "type": "generic", "value": "int" }
+          "type": {"type": "generic", "value": "int"}
         },
         {
           "name": "channelCount",
-          "type": { "type": "generic", "value": "int" }
+          "type": {"type": "generic", "value": "int"}
         },
         {
           "name": "audioCodec",
@@ -392,7 +392,7 @@
         },
         {
           "name": "details",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         }
       ]
     },
@@ -422,7 +422,7 @@
       "params": [
         {
           "name": "value",
-          "type": { "type": "generic", "value": "string" }
+          "type": {"type": "generic", "value": "string"}
         }
       ]
     }

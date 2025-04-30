@@ -1,4 +1,4 @@
-import { Deserializer } from '@jsbuffer/codec';
+import {Deserializer} from '@jsbuffer/codec';
 
 export default async function decodeMetadata<T>(
   targetBinaryFile: string,
@@ -10,10 +10,7 @@ export default async function decodeMetadata<T>(
   let metadata: T | null = null;
 
   try {
-    await fs.promises.access(
-      targetBinaryFile,
-      fs.constants.R_OK
-    );
+    await fs.promises.access(targetBinaryFile, fs.constants.R_OK);
   } catch (err) {
     console.error(
       'File "%s" does not exist, returning `null`',
@@ -38,7 +35,11 @@ export default async function decodeMetadata<T>(
       reason
     );
 
-    console.log('Setting decoding failure result for "%s": %o', targetBinaryFile, decodingFailureResult);
+    console.log(
+      'Setting decoding failure result for "%s": %o',
+      targetBinaryFile,
+      decodingFailureResult
+    );
     metadata = decodingFailureResult;
   }
 
