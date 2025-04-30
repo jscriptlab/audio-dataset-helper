@@ -15,6 +15,7 @@ import {
   encodeFFmpegEncodedFileResultTrait,
   encodeFFmpegOriginalFileResultTrait,
   FFmpegEncodedFileResultCorrupted,
+  FFmpegEncodedFileResultFailure,
   FFmpegEncodedFileResultSuccess,
   FFmpegOriginalFileResultCorrupted,
   FFmpegOriginalFileResultFailure,
@@ -317,8 +318,8 @@ import sha1sum from './sha1sum';
           outputDirectory,
           `${leadingSlices.join('_')}.${outExtension}`
         );
-        const hashOutputFile = `${outputFile}.sha1sum`;
 
+        const hashOutputFile = `${outputFile}.sha1sum`;
         const encodedFileMetadataOutputFile = `${outputFile}.bin`;
 
         const encodedFileMetadata = await decodeMetadata(
@@ -332,8 +333,9 @@ import sha1sum from './sha1sum';
           isFFmpegEncodedFileResultCorrupted(encodedFileMetadata)
         ) {
           console.log(
-            'Metadata for file "%s" is corrupted. You might need to delete it.',
-            outputFile
+            'Metadata for file "%s" is corrupted. You might need to delete it: %o',
+            outputFile,
+            encodedFileMetadata
           );
           // FIXME: Maybe do this? But it would fail the entire process because of one corrupted file
           // FIXME: Maybe do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
@@ -364,32 +366,50 @@ import sha1sum from './sha1sum';
           );
         }
 
-        await spawn('ffmpeg', [
-          ...ffmpegArgs,
+        const metadataAudioCodec = ((codec) => {
+          switch (codec) {
+            case 'libopus':
+              return AudioCodecOpus();
+          }
+          throw new Error(`Not implemented: ${codec}`);
+        })(audioCodec);
 
-          // Audio output file
-          outputFile
-        ]).wait();
+        let encodingResult: FFmpegEncodedFileResultSuccess | FFmpegEncodedFileResultFailure;
 
-        const successMetadataInfo = FFmpegEncodedFileResultSuccess({
-          sampleRate,
-          bitrate,
-          channelCount,
-          audioCodec: ((codec) => {
-            switch (codec) {
-              case 'libopus':
-                return AudioCodecOpus();
-            }
-            throw new Error(`Not implemented: ${codec}`);
-          })(audioCodec),
-          outputFile,
-          origin: inputFileMetadata
-        });
+        try {
+          // Run ffmpeg
+          await spawn('ffmpeg', [
+            ...ffmpegArgs,
+
+            // Audio output file
+            outputFile
+          ]).wait();
+
+          encodingResult = FFmpegEncodedFileResultSuccess({
+            sampleRate,
+            bitrate,
+            channelCount,
+            audioCodec: metadataAudioCodec,
+            outputFile,
+            origin: inputFileMetadata
+          });
+        } catch (reason) {
+          encodingResult = FFmpegEncodedFileResultFailure({
+            origin: inputFileMetadata,
+            details: [
+              'ffmpeg failed.',
+              `${reason}`
+            ].join('\n')
+          });
+
+          // Exit the process with a non-zero exit code
+          process.exitCode = 1;
+        }
 
         // Save metadata
         await saveMetadata(
           encodedFileMetadataOutputFile,
-          successMetadataInfo,
+          encodingResult,
           serializer,
           encodeFFmpegEncodedFileResultTrait
         );
