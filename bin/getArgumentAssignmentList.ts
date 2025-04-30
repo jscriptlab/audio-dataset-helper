@@ -1,4 +1,4 @@
-import {CreateResultFn} from 'cli-argument-helper/assignmentValueFromIndex';
+import { CreateResultFn } from 'cli-argument-helper/assignmentValueFromIndex';
 import getArgumentAssignment from 'cli-argument-helper/getArgumentAssignment';
 
 // TODO: Move this to cli-argument-helper library

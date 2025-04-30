@@ -1,4 +1,4 @@
-import {Serializer} from '@jsbuffer/codec';
+import { Serializer } from '@jsbuffer/codec';
 
 export default async function saveMetadata<T>(
   metadataDestinationFile: string,

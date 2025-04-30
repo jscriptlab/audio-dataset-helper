@@ -1,4 +1,4 @@
-import {Deserializer} from '@jsbuffer/codec';
+import { Deserializer } from '@jsbuffer/codec';
 
 export default async function decodeMetadata<T>(
   targetBinaryFile: string,

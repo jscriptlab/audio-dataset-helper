@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import {Serializer} from '@jsbuffer/codec';
-import {getArgument} from 'cli-argument-helper';
+import { Serializer } from '@jsbuffer/codec';
+import { getArgument } from 'cli-argument-helper';
 import getArgumentAssignment from 'cli-argument-helper/getArgumentAssignment';
-import {getInteger} from 'cli-argument-helper/number';
-import {getString} from 'cli-argument-helper/string';
+import { getInteger } from 'cli-argument-helper/number';
+import { getString } from 'cli-argument-helper/string';
 import assert from 'node:assert';
 import console from 'node:console';
 import path from 'node:path';
@@ -45,7 +45,7 @@ import sha1sum from './sha1sum';
     return;
   }
 
-  const {spawn} = await import('@high-nodejs/child_process');
+  const { spawn } = await import('@high-nodejs/child_process');
   const fs = await import('node:fs');
 
   const bitrateList = getArgumentAssignmentList(
@@ -224,7 +224,7 @@ import sha1sum from './sha1sum';
         'csv=p=0',
         inputFile
       ],
-      {stdio: ['ignore', 'pipe', 'ignore'], log: true}
+      { stdio: ['ignore', 'pipe', 'ignore'], log: true }
     );
 
     const text = await ffprobe.output().stdout().decode('utf8');
