@@ -1,4 +1,4 @@
-import {spawn} from '@high-nodejs/child_process';
+import { spawn } from '@high-nodejs/child_process';
 import assert from 'node:assert';
 
 export default async function sha1sum(input: string) {
@@ -24,8 +24,6 @@ export default async function sha1sum(input: string) {
     /\n$/,
     ''
   );
-
-  await Promise.all([sha1sum.wait(), awk.wait()]);
 
   console.log('Calculated "%s" SHA1 sum: %s', input, result);
 
