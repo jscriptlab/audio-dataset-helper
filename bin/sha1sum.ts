@@ -25,6 +25,8 @@ export default async function sha1sum(input: string) {
     ''
   );
 
+  await Promise.all([sha1sum.wait(), awk.wait()]);
+
   console.log('Calculated "%s" SHA1 sum: %s', input, result);
 
   return result;
