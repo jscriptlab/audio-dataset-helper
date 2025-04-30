@@ -6,6 +6,8 @@ export default async function saveMetadata<T>(
   serializer: Serializer,
   encodeFn: (serializer: Serializer, metadata: T) => void
 ): Promise<void> {
+  console.log('Saving metadata: %o', metadata);
+
   const fs = await import('node:fs');
 
   // Rewind the serializer every time before writting something to it.
@@ -13,8 +15,6 @@ export default async function saveMetadata<T>(
 
   try {
     encodeFn(serializer, metadata);
-
-    console.log('Saving metadata: %o', metadata);
 
     await fs.promises.writeFile(
       metadataDestinationFile,
