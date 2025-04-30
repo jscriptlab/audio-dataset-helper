@@ -17,7 +17,10 @@
   "files": [
     "bin/**/*.js",
     "bin/**/*.ts",
-    "bin/**/*.map"
+    "bin/**/*.map",
+    "schema/**/*.js",
+    "schema/**/*.ts",
+    "schema/**/*.map"
   ],
   "bin": {
     "audiomaking-dataset": "./bin/index.js"

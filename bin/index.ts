@@ -68,8 +68,12 @@ import sha1sum from './sha1sum';
   );
 
   if (getArgument(args, '--version') !== null) {
-    const pkgInfo = await import('../package.json')
-    console.log('%s@v%s', pkgInfo.default.name, pkgInfo.default.version);
+    const pkgInfo = await import('../package.json');
+    console.log(
+      '%s@v%s',
+      pkgInfo.default.name,
+      pkgInfo.default.version
+    );
     return;
   }
 
