@@ -198,7 +198,7 @@ import sha1sum from './sha1sum';
 
   // Test the input file using `ffprobe`, encode it if it is a real file
   try {
-    await spawn.wait(
+    const ffprobe = spawn(
       'ffprobe',
       [
         '-v',
@@ -215,8 +215,14 @@ import sha1sum from './sha1sum';
         'csv=p=0',
         inputFile
       ],
-      { stdio: ['ignore', 'ignore', 'ignore'], log: true }
+      { stdio: ['ignore', 'pipe', 'ignore'], log: true }
     );
+
+    const text = await ffprobe.output().stdout().decode('utf8');
+
+    await ffprobe.wait();
+
+    console.log('ffprobe ran on "%s" resulted in: %s', inputFile, text);
 
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,
