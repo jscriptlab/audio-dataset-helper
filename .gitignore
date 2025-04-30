@@ -5,4 +5,6 @@
 *.d.ts
 *.map
 
-/test/out
+/test/*.mp4
+/test/*.wav
+*.bin
