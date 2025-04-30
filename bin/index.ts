@@ -229,18 +229,19 @@ import sha1sum from './sha1sum';
 
     const text = await ffprobe.output().stdout().decode('utf8');
 
-    await ffprobe.wait();
-
     console.log(
       'ffprobe ran on "%s" resulted in: %s',
       inputFile,
       text
     );
 
+    assert.strict.ok((/audio/.test(text)), `ffprobe failed. The command is used to detect audio streams in a file. ` + `But it did not detect any audio stream in "${inputFile}".`);
+
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,
       originalFile: inputFile
     });
+
     await saveMetadata(
       inputFileMetadataOutputFile,
       inputFileMetadata,
