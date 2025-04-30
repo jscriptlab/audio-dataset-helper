@@ -198,21 +198,25 @@ import sha1sum from './sha1sum';
 
   // Test the input file using `ffprobe`, encode it if it is a real file
   try {
-    await spawn.wait('ffprobe', [
-      '-v',
-      'error',
-      '-analyzeduration',
-      '1000000',
-      '-probesize',
-      '1000000',
-      '-select_streams',
-      'a',
-      '-show_entries',
-      'stream=codec_type',
-      '-of',
-      'csv=p=0',
-      inputFile
-    ], { stdio: ['ignore', 'ignore', 'ignore'], log: true });
+    await spawn.wait(
+      'ffprobe',
+      [
+        '-v',
+        'error',
+        '-analyzeduration',
+        '1000000',
+        '-probesize',
+        '1000000',
+        '-select_streams',
+        'a',
+        '-show_entries',
+        'stream=codec_type',
+        '-of',
+        'csv=p=0',
+        inputFile
+      ],
+      { stdio: ['ignore', 'ignore', 'ignore'], log: true }
+    );
 
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,
