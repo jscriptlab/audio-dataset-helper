@@ -169,9 +169,17 @@ import sha1sum from './sha1sum';
     inputFileMetadata = FFmpegOriginalFileResultUnknown({
       originalFile: inputFile
     });
-    console.log('Setting default metadata for file "%s": %o', inputFile, inputFileMetadata);
+    console.log(
+      'Setting default metadata for file "%s": %o',
+      inputFile,
+      inputFileMetadata
+    );
   } else {
-    console.log('Metadata for file "%s": %o', inputFile, inputFileMetadata);
+    console.log(
+      'Metadata for file "%s": %o',
+      inputFile,
+      inputFileMetadata
+    );
   }
 
   if (isFFmpegOriginalFileResultCorrupted(inputFileMetadata)) {
