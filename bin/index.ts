@@ -8,7 +8,24 @@ import { getString } from 'cli-argument-helper/string';
 import assert from 'node:assert';
 import console from 'node:console';
 import path from 'node:path';
-import { AudioCodecOpus, decodeFFmpegEncodedFileResultTrait, decodeFFmpegOriginalFileResultTrait, encodeFFmpegEncodedFileResultTrait, encodeFFmpegOriginalFileResultTrait, FFmpegEncodedFileResultCorrupted, FFmpegEncodedFileResultSuccess, FFmpegOriginalFileResultCorrupted, FFmpegOriginalFileResultFailure, FFmpegOriginalFileResultSuccess, FFmpegOriginalFileResultUnknown, FileDigestSHA1, isFFmpegEncodedFileResultCorrupted, isFFmpegEncodedFileResultFailure, isFFmpegOriginalFileResultCorrupted, isFFmpegOriginalFileResultFailure } from '../schema/main.jsb';
+import {
+  AudioCodecOpus,
+  decodeFFmpegEncodedFileResultTrait,
+  decodeFFmpegOriginalFileResultTrait,
+  encodeFFmpegEncodedFileResultTrait,
+  encodeFFmpegOriginalFileResultTrait,
+  FFmpegEncodedFileResultCorrupted,
+  FFmpegEncodedFileResultSuccess,
+  FFmpegOriginalFileResultCorrupted,
+  FFmpegOriginalFileResultFailure,
+  FFmpegOriginalFileResultSuccess,
+  FFmpegOriginalFileResultUnknown,
+  FileDigestSHA1,
+  isFFmpegEncodedFileResultCorrupted,
+  isFFmpegEncodedFileResultFailure,
+  isFFmpegOriginalFileResultCorrupted,
+  isFFmpegOriginalFileResultFailure
+} from '../schema/main.jsb';
 import decodeMetadata from './decodeMetadata';
 import getArgumentAssignmentList from './getArgumentAssignmentList';
 import saveMetadata from './saveMetadata';
@@ -62,12 +79,13 @@ import sha1sum from './sha1sum';
 
   outputDirectory = path.resolve(process.cwd(), outputDirectory);
 
-  const createParentDirectories = getArgument(args, '--parents') !== null;
+  const createParentDirectories =
+    getArgument(args, '--parents') !== null;
 
   // Create parent directories for convenience
   if (createParentDirectories) {
-    await fs.promises.mkdir((outputDirectory), {
-      recursive: true,
+    await fs.promises.mkdir(outputDirectory, {
+      recursive: true
     });
   }
 
@@ -138,25 +156,28 @@ import sha1sum from './sha1sum';
   let inputFileMetadata = await decodeMetadata(
     inputFileMetadataOutputFile,
     decodeFFmpegOriginalFileResultTrait,
-    FFmpegOriginalFileResultCorrupted(),
+    FFmpegOriginalFileResultCorrupted()
   );
 
   if (inputFileMetadata === null) {
     inputFileMetadata = FFmpegOriginalFileResultUnknown({
       originalFile: inputFile
-    })
+    });
   }
 
   if (isFFmpegOriginalFileResultCorrupted(inputFileMetadata)) {
-    console.log('Metadata for file "%s" is corrupted. You might need to delete it.', inputFile);
+    console.log(
+      'Metadata for file "%s" is corrupted. You might need to delete it.',
+      inputFile
+    );
     process.exitCode = 1;
     return;
   }
 
-  if (
-    isFFmpegOriginalFileResultFailure(inputFileMetadata)
-  ) {
-    console.log(`Metadata for file "${inputFile}" contains a failure result. Skipping...`);
+  if (isFFmpegOriginalFileResultFailure(inputFileMetadata)) {
+    console.log(
+      `Metadata for file "${inputFile}" contains a failure result. Skipping...`
+    );
     // Do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
     return;
   }
@@ -181,15 +202,28 @@ import sha1sum from './sha1sum';
 
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,
-      originalFile: inputFile,
-    })
-    await saveMetadata(inputFileMetadataOutputFile, inputFileMetadata, serializer, encodeFFmpegOriginalFileResultTrait);
+      originalFile: inputFile
+    });
+    await saveMetadata(
+      inputFileMetadataOutputFile,
+      inputFileMetadata,
+      serializer,
+      encodeFFmpegOriginalFileResultTrait
+    );
   } catch (reason) {
-    await saveMetadata(inputFileMetadataOutputFile, FFmpegOriginalFileResultFailure({
-      digest: inputFileDigest,
-      originalFile: inputFile,
-      details: ['ffprobe failed. The command is used to detect audio streams in a file.', `${(reason)}`].join('\n'),
-    }), serializer, encodeFFmpegOriginalFileResultTrait);
+    await saveMetadata(
+      inputFileMetadataOutputFile,
+      FFmpegOriginalFileResultFailure({
+        digest: inputFileDigest,
+        originalFile: inputFile,
+        details: [
+          'ffprobe failed. The command is used to detect audio streams in a file.',
+          `${reason}`
+        ].join('\n')
+      }),
+      serializer,
+      encodeFFmpegOriginalFileResultTrait
+    );
 
     if (fail !== null) {
       process.exitCode = 1;
@@ -249,14 +283,22 @@ import sha1sum from './sha1sum';
         );
         const hashOutputFile = `${outputFile}.sha1sum`;
 
-        const encodedFileMetadataOutputFile = (
-          `${outputFile}.bin`
+        const encodedFileMetadataOutputFile = `${outputFile}.bin`;
+
+        const encodedFileMetadata = await decodeMetadata(
+          encodedFileMetadataOutputFile,
+          decodeFFmpegEncodedFileResultTrait,
+          FFmpegEncodedFileResultCorrupted()
         );
 
-        const encodedFileMetadata = await decodeMetadata(encodedFileMetadataOutputFile, decodeFFmpegEncodedFileResultTrait, FFmpegEncodedFileResultCorrupted());
-
-        if (isFFmpegEncodedFileResultFailure(encodedFileMetadata) || isFFmpegEncodedFileResultCorrupted(encodedFileMetadata)) {
-          console.log('Metadata for file "%s" is corrupted. You might need to delete it.', outputFile);
+        if (
+          isFFmpegEncodedFileResultFailure(encodedFileMetadata) ||
+          isFFmpegEncodedFileResultCorrupted(encodedFileMetadata)
+        ) {
+          console.log(
+            'Metadata for file "%s" is corrupted. You might need to delete it.',
+            outputFile
+          );
           // TODO: Maybe do this? But it would fail the entire process because of one corrupted file
           // Maybe do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
           // process.exitCode = 1;
@@ -267,7 +309,10 @@ import sha1sum from './sha1sum';
           console.log(
             `Skipping "${inputFile}" because it already exists: "${outputFile}" (${hashOutputFile}).`
           );
-          console.log('File metadata already exists: %o', encodedFileMetadata);
+          console.log(
+            'File metadata already exists: %o',
+            encodedFileMetadata
+          );
           continue;
         }
 
@@ -306,11 +351,15 @@ import sha1sum from './sha1sum';
         });
 
         // Save metadata
-        await saveMetadata(encodedFileMetadataOutputFile, successMetadataInfo, serializer, encodeFFmpegEncodedFileResultTrait);
+        await saveMetadata(
+          encodedFileMetadataOutputFile,
+          successMetadataInfo,
+          serializer,
+          encodeFFmpegEncodedFileResultTrait
+        );
 
         // Save the file hash to the same output file name leaded by the `.sha1sum` extension
         await fs.promises.writeFile(hashOutputFile, inputFileHash);
-
       }
     }
   }
