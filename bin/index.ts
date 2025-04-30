@@ -331,8 +331,8 @@ import sha1sum from './sha1sum';
             'Metadata for file "%s" is corrupted. You might need to delete it.',
             outputFile
           );
-          // TODO: Maybe do this? But it would fail the entire process because of one corrupted file
-          // Maybe do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
+          // FIXME: Maybe do this? But it would fail the entire process because of one corrupted file
+          // FIXME: Maybe do not fail the process. This might be simply because we are accessing a file that either is not a valid media file or does not contain any audio stream.
           // process.exitCode = 1;
           continue;
         }
