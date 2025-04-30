@@ -287,6 +287,13 @@ import sha1sum from './sha1sum';
         );
 
         const ffmpegArgs = [
+          // Hide statistics
+          '-nostats',
+          // Hide banner
+          '-hide_banner',
+          // Verbosity
+          '-loglevel',
+          'error',
           // Input
           '-i',
           inputFile,
@@ -374,7 +381,9 @@ import sha1sum from './sha1sum';
           throw new Error(`Not implemented: ${codec}`);
         })(audioCodec);
 
-        let encodingResult: FFmpegEncodedFileResultSuccess | FFmpegEncodedFileResultFailure;
+        let encodingResult:
+          | FFmpegEncodedFileResultSuccess
+          | FFmpegEncodedFileResultFailure;
 
         try {
           // Run ffmpeg
@@ -383,7 +392,10 @@ import sha1sum from './sha1sum';
 
             // Audio output file
             outputFile
-          ]).wait();
+          ], {
+            log: true,
+            stdio: ['ignore', 'inherit', 'inherit']
+          }).wait();
 
           encodingResult = FFmpegEncodedFileResultSuccess({
             sampleRate,
@@ -394,12 +406,17 @@ import sha1sum from './sha1sum';
             origin: inputFileMetadata
           });
         } catch (reason) {
+          const details = ['ffmpeg failed.']
+
+          try {
+            details.push(JSON.stringify(reason));
+          } catch (reason) {
+            details.push(`${reason}`);
+          }
+
           encodingResult = FFmpegEncodedFileResultFailure({
             origin: inputFileMetadata,
-            details: [
-              'ffmpeg failed.',
-              `${reason}`
-            ].join('\n')
+            details: details.join('\n')
           });
 
           // Exit the process with a non-zero exit code
