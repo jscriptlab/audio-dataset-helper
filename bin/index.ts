@@ -230,7 +230,11 @@ import sha1sum from './sha1sum';
 
     await ffprobe.wait();
 
-    console.log('ffprobe ran on "%s" resulted in: %s', inputFile, text);
+    console.log(
+      'ffprobe ran on "%s" resulted in: %s',
+      inputFile,
+      text
+    );
 
     inputFileMetadata = FFmpegOriginalFileResultSuccess({
       digest: inputFileDigest,

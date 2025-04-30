@@ -9,8 +9,9 @@
   },
   "version": "0.0.15",
   "name": "@audiomaking/dataset-builder",
+
   "scripts": {
-    "lint": "npx prettier --write bin",
+    "lint": "npx prettier --write bin schema",
     "generate:schema": "npx jsbuffer main.jsb -o schema --extends tsconfig.base.json",
     "prepublishOnly": "npm run lint && npx tsc -b bin --force"
   },

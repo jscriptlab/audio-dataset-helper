@@ -29,9 +29,7 @@
     "sourceMap": true,
     "declarationMap": true,
     // Library information
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "module": "Node16",
     "target": "ESNext",
     "moduleResolution": "node16",
@@ -41,8 +39,6 @@
     "pretty": true
   },
   "watchOptions": {
-    "excludeDirectories": [
-      "node_modules"
-    ]
+    "excludeDirectories": ["node_modules"]
   }
 }
