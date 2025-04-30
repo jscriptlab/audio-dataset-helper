@@ -32,10 +32,21 @@ import saveMetadata from './saveMetadata';
 import sha1sum from './sha1sum';
 
 (async () => {
+  const args = process.argv.slice(2);
+
+  if (getArgument(args, '--version') !== null) {
+    const pkgInfo = await import('../package.json');
+    console.log(
+      '%s@v%s',
+      pkgInfo.default.name,
+      pkgInfo.default.version
+    );
+    return;
+  }
+
   const { spawn } = await import('@high-nodejs/child_process');
   const fs = await import('node:fs');
 
-  const args = process.argv.slice(2);
   const bitrateList = getArgumentAssignmentList(
     args,
     '--bitrate',
@@ -66,16 +77,6 @@ import sha1sum from './sha1sum';
     outputDirectory !== null,
     `--output-directory, -o is required`
   );
-
-  if (getArgument(args, '--version') !== null) {
-    const pkgInfo = await import('../package.json');
-    console.log(
-      '%s@v%s',
-      pkgInfo.default.name,
-      pkgInfo.default.version
-    );
-    return;
-  }
 
   // FIXME: We will implement outputting raw data from a file in the future
   // const rawData = getArgument(args, '-');
