@@ -12,7 +12,7 @@ export default async function decodeMetadata<T>(
   try {
     await fs.promises.access(
       targetBinaryFile,
-      fs.constants.R_OK | fs.constants.W_OK
+      fs.constants.R_OK
     );
   } catch (err) {
     console.error(
@@ -25,26 +25,21 @@ export default async function decodeMetadata<T>(
   const contents = await fs.promises.readFile(targetBinaryFile);
 
   try {
-    try {
-      metadata = decodeFn(
-        new Deserializer({
-          buffer: contents,
-          textDecoder: new TextDecoder()
-        })
-      );
-    } catch (reason) {
-      console.error(
-        'Failed to decode! Corrupted file: "%s"',
-        targetBinaryFile
-      );
-      console.error(reason);
-
-      metadata = decodingFailureResult;
-    }
+    metadata = decodeFn(
+      new Deserializer({
+        buffer: contents,
+        textDecoder: new TextDecoder()
+      })
+    );
   } catch (reason) {
-    console.log('Failed to decode metadata: %s', targetBinaryFile);
-    console.error(reason);
-    metadata = null;
+    console.error(
+      'Failed to decode "%s", it might be corrupted: %o',
+      targetBinaryFile,
+      reason
+    );
+
+    console.log('Setting decoding failure result for "%s": %o', targetBinaryFile, decodingFailureResult);
+    metadata = decodingFailureResult;
   }
 
   return metadata;
