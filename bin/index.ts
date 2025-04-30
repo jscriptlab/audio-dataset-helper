@@ -67,6 +67,12 @@ import sha1sum from './sha1sum';
     `--output-directory, -o is required`
   );
 
+  if (getArgument(args, '--version') !== null) {
+    const pkgInfo = await import('../package.json')
+    console.log('%s@v%s', pkgInfo.default.name, pkgInfo.default.version);
+    return;
+  }
+
   // FIXME: We will implement outputting raw data from a file in the future
   // const rawData = getArgument(args, '-');
   // let ffmpegAudioOutputFormats: FFmpegAudioFormat[] | null;
